@@ -1,0 +1,90 @@
+-- User tablosunu oluştur
+CREATE TABLE system_user_app
+(
+    id         BIGSERIAL PRIMARY KEY,               -- BaseEntity'den gelen id
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, -- BaseEntity'den gelen createdAt
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, -- BaseEntity'den gelen updatedAt
+    username   VARCHAR(255)        NOT NULL,        -- UserEntity'den gelen username
+    password   VARCHAR(255)        NOT NULL,        -- UserEntity'den gelen password
+    email      VARCHAR(255) UNIQUE NOT NULL,        -- UserEntity'den gelen unique email
+    status     VARCHAR(255)                         -- Enum UserStatus'tan gelen status
+);
+
+-- Profile tablosunu oluştur
+CREATE TABLE profile
+(
+    id         BIGSERIAL PRIMARY KEY,               -- BaseEntity'den gelen id
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, -- BaseEntity'den gelen createdAt
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, -- BaseEntity'den gelen updatedAt
+    user_id    BIGINT,                              -- Kullanıcı ile ilişki kurmak için
+    CONSTRAINT fk_profile_user FOREIGN KEY (user_id) REFERENCES system_user_app (id) ON DELETE CASCADE
+);
+
+-- Profile ile platform ve URL'leri tutacak tablo
+CREATE TABLE profile_entity_platforms_and_urls
+(
+    profile_entity_id BIGINT       NOT NULL, -- ProfileEntity'nin id'si
+    platform   VARCHAR(255) NOT NULL, -- Enum Platform'un string hali
+    url        VARCHAR(255) NOT NULL, -- URL
+    PRIMARY KEY (profile_entity_id, platform),
+    CONSTRAINT fk_profile_platforms FOREIGN KEY (profile_entity_id) REFERENCES profile (id) ON DELETE CASCADE
+);
+
+
+
+CREATE TABLE user_roles
+(
+    user_id BIGINT NOT NULL,  -- system_user_app tablosundaki user_id ile ilişkilendirir
+    role    VARCHAR(255) NOT NULL,  -- Enum'un string değeri
+    PRIMARY KEY (user_id, role),
+    CONSTRAINT fk_user_roles FOREIGN KEY (user_id) REFERENCES system_user_app (id) ON DELETE CASCADE
+);
+
+
+BYTEA
+
+UPDATED--
+
+-- User tablosunu oluştur
+CREATE TABLE system_user_app
+(
+    id         BIGSERIAL PRIMARY KEY,               -- BaseEntity'den gelen id
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, -- BaseEntity'den gelen createdAt
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, -- BaseEntity'den gelen updatedAt
+    username   VARCHAR(255)        NOT NULL,        -- UserEntity'den gelen username
+    password   VARCHAR(255)        NOT NULL,        -- UserEntity'den gelen password
+    email      VARCHAR(255) UNIQUE NOT NULL,        -- UserEntity'den gelen unique email
+    status     VARCHAR(255)                         -- Enum UserStatus'tan gelen status
+);
+
+-- Profile tablosunu oluştur
+CREATE TABLE profile
+(
+    id              BIGSERIAL PRIMARY KEY,               -- BaseEntity'den gelen id
+    created_at      TIMESTAMP DEFAULT CURRENT_TIMESTAMP, -- BaseEntity'den gelen createdAt
+    updated_at      TIMESTAMP DEFAULT CURRENT_TIMESTAMP, -- BaseEntity'den gelen updatedAt
+    user_id         BIGINT,                              -- Kullanıcı ile ilişki kurmak için
+    profile_picture BYTEA,                               -- byte[] tipindeki profilePicture alanı
+    CONSTRAINT fk_profile_user FOREIGN KEY (user_id) REFERENCES system_user_app (id) ON DELETE CASCADE
+);
+
+-- Profile ile platform ve URL'leri tutacak tablo
+CREATE TABLE profile_entity_platforms_and_urls
+(
+    profile_entity_id BIGINT       NOT NULL, -- ProfileEntity'nin id'si
+    platform          VARCHAR(255) NOT NULL, -- Enum Platform'un string hali
+    url               VARCHAR(255) NOT NULL, -- URL
+    PRIMARY KEY (profile_entity_id, platform),
+    CONSTRAINT fk_profile_platforms FOREIGN KEY (profile_entity_id) REFERENCES profile (id) ON DELETE CASCADE
+);
+
+-- User roles tablosunu oluştur
+CREATE TABLE user_roles
+(
+    user_id BIGINT NOT NULL,  -- system_user_app tablosundaki user_id ile ilişkilendirir
+    role    VARCHAR(255) NOT NULL,  -- Enum'un string değeri
+    PRIMARY KEY (user_id, role),
+    CONSTRAINT fk_user_roles FOREIGN KEY (user_id) REFERENCES system_user_app (id) ON DELETE CASCADE
+);
+
+
