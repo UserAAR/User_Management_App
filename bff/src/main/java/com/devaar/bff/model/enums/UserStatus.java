@@ -1,4 +1,4 @@
-package com.devaar.backend.model.enums;
+package com.devaar.bff.model.enums;
 
 public enum UserStatus {
     ACTIVE,

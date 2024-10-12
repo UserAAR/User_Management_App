@@ -5,6 +5,7 @@ import com.devaar.backend.model.dto.UserDto;
 import com.devaar.backend.service.concretes.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -13,7 +14,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("v1/backend/users")
+@RequestMapping("api/v1/backend/users")
 public class UserController {
 
     private final UserService userService;
@@ -74,14 +75,16 @@ public class UserController {
     }
 
     @GetMapping("/{userId}/profiles/{profileId}/image")
-    public ResponseEntity<byte[]> getProfileImageById(@PathVariable Long userId, @PathVariable Long profileId) {
+    public ResponseEntity<byte[]> getProfileImageById(
+            @PathVariable Long userId, @PathVariable Long profileId) {
         byte[] image = userService.getProfileImageById(userId, profileId);
-        return ResponseEntity.ok(image);
+        return ResponseEntity.ok().contentType(MediaType.IMAGE_JPEG).body(image);
     }
 
     @PatchMapping("/{userId}/profiles/{profileId}/image")
-    public ResponseEntity<Void> updateProfileImageById(@PathVariable Long userId, @PathVariable Long profileId, @RequestParam("image") MultipartFile profileImage) {
+    public void updateProfileImageById(@PathVariable Long userId,
+                                                       @PathVariable Long profileId,
+                                                       @RequestParam MultipartFile profileImage) {
         userService.updateProfileImageById(userId, profileId, profileImage);
-        return ResponseEntity.noContent().build();
     }
 }
