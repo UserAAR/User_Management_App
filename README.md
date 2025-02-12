@@ -46,8 +46,8 @@ The architecture consists of two microservices communicating through REST APIs. 
 
 1. **Clone the repository:**
     ```bash
-    git clone https://github.com/yourusername/your-repository.git
-    cd your-repository
+    git clone https://github.com/UserAAR/User-management_App.git
+    cd User-Management_App
     ```
 
 2. **Set up PostgreSQL with Docker Compose:**
